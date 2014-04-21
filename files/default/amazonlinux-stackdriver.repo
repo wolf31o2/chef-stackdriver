@@ -1,0 +1,6 @@
+[stackdriver]
+name=Stackdriver Agent Repository
+baseurl=http://repo.stackdriver.com/stackdriver-amazonlinux.repo
+enabled=1
+gpgcheck=1
+gpgkey=https://www.stackdriver.com/RPM-GPG-KEY-stackdriver
