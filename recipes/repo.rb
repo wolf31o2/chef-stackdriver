@@ -28,7 +28,7 @@ cookbook_file "/etc/yum.repos.d/stackdriver.repo" do
   mode 00644
   notifies :run, "execute[create-yum-cache]", :immediately
   notifies :create, "ruby_block[internal-yum-cache-reload]", :immediately
-  nof_if do
+  not_if do
     platform?('amazon')
   end
 end
