@@ -38,3 +38,21 @@ default['stackdriver']['plugins']['tomcat']['requires'] = []
 default['stackdriver']['plugins']['tomcat']['jmx']['port'] = 1099
 default['stackdriver']['plugins']['tomcat']['jmx']['host'] = 'localhost'
 default['stackdriver']['plugins']['tomcat']['jmxtrans_jar_url'] = 'https://s3.amazonaws.com/stackrpms/jmxtrans/jmxtrans-all.jar'
+
+case node[:platform]
+when 'amazon'
+  default[:stackdriver][:repo_url] = 'http://repo.stackdriver.com/stackdriver-amazonlinux.repo'
+when 'redhat', 'centos'
+  default[:stackdriver][:repo_url] = 'http://repo.stackdriver.com/stackdriver.repo'
+
+when 'ubuntu'
+  case node[:platform_version]
+    when '12.04', '12.10'
+      default[:stackdriver][:repo_url] = 'deb http://repo.stackdriver.com/apt precise main'
+    when '10.04'
+      default[:stackdriver][:repo_url] = 'deb http://repo.stackdriver.com/apt lucid main'
+    else
+      default[:stackdriver][:repo_url] = 'deb http://repo.stackdriver.com/apt precise main'
+  end
+
+end
