@@ -1,5 +1,11 @@
 # Define whether or not to autogenerate the stackdriver collectd config file
-AUTOGENERATE_COLLECTD_CONFIG="<%= node[:stackdriver][:collectd][:config] %>"
+AUTOGENERATE_COLLECTD_CONFIG="<%= node['stackdriver']['collectd']['config'] %>"
+
+# Outbound HTTP proxy
+PROXY_URL="<%= node['stackdriver']['proxy_url'] %>"
 
 # Your stackdriver api key
-STACKDRIVER_API_KEY="<%= node[:stackdriver][:api][:key] %>"
+STACKDRIVER_API_KEY="<%= node['stackdriver']['api']['key'] %>"
+
+# Auto-detect Google Cloud
+DETECT_GCM="<%= node['stackdriver']['detect_gcm'] %>"
