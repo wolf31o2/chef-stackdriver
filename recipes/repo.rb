@@ -9,44 +9,23 @@
 #
 
 case node['platform_family']
-when 'rhel', 'amazon'
-
-  # Re-make the yum cache vi command resource
-  execute 'create-yum-cache' do
-    command 'yum -q makecache'
-    action :nothing
-  end
-
-  # Reload the yum cache using the Chef provider
-  ruby_block 'internal-yum-cache-reload' do
-    block do
-      Chef::Provider::Package::Yum::YumCache.instance.reload
-    end
-    action :nothing
-  end
-
-  # Create the StackDriver yum repo file in yum.repos.d
-  cookbook_file '/etc/yum.repos.d/stackdriver.repo' do
-    source platform?('amazon') ? 'amazonlinux-stackdriver.repo' : 'stackdriver.repo'
-    mode '0644'
-    notifies :run, 'execute[create-yum-cache]', :immediately
-    notifies :create, 'ruby_block[internal-yum-cache-reload]', :immediately
-  end
-
 when 'debian'
-
-  # Create the StackDriver apt repo list
-  template '/etc/apt/sources.list.d/stackdriver.list' do
-    source 'stackdriver.list.apt.erb'
-    mode '0644'
-    owner 'root'
-    group 'root'
-    action :create
+  include_recipe 'apt'
+  apt_repository 'stackdriver' do
+    uri node['stackdriver']['apt_repo_url']
+    distribution node['lsb']['codename']
+    components 'main'
+    action :add
+    arch 'amd64'
+    key node['stackdriver']['apt_gpgkey_url']
   end
-
-  # update the local package list
-  execute 'stackdriver-apt-get-update' do
-    command 'apt-get update'
-    action :nothing
+when 'rhel', 'amazon' # ~FC024
+  include_recipe 'yum'
+  yum_repository 'stackdriver' do
+    description 'Stackdriver Agent Repository'
+    url node['stackdriver']['yum_repo_url']
+    gpgkey node['stackdriver']['yum_gpgkey_url']
+    gpgcheck true
+    action :add
   end
 end

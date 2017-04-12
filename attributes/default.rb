@@ -41,23 +41,7 @@ default['stackdriver']['plugins']['tomcat']['jmx']['port'] = '1099'
 default['stackdriver']['plugins']['tomcat']['jmx']['host'] = 'localhost'
 default['stackdriver']['plugins']['tomcat']['jmxtrans_jar_url'] = 'https://s3.amazonaws.com/stackrpms/jmxtrans/jmxtrans-all.jar'
 
-default['stackdriver']['repo_url'] =
-  case node['platform_family']
-  when 'amazon'
-    'http://repo.stackdriver.com/stackdriver-amazonlinux.repo'
-  when 'rhel'
-    if node['platform'] == 'amazon'
-      'http://repo.stackdriver.com/stackdriver-amazonlinux.repo'
-    else
-      'http://repo.stackdriver.com/stackdriver.repo'
-    end
-  when 'debian'
-    case node['platform_version']
-    when '12.04', '12.10'
-      'deb http://repo.stackdriver.com/apt precise main'
-    when '10.04'
-      'deb http://repo.stackdriver.com/apt lucid main'
-    else
-      'deb http://repo.stackdriver.com/apt precise main'
-    end
-  end
+default['stackdriver']['apt_repo_url'] = 'http://repo.stackdriver.com/apt'
+default['stackdriver']['yum_repo_url'] = ''http://repo.stackdriver.com/repo/el6/$basearch/'
+default['stackdriver']['apt_gpgkey_url'] = 'https://app.stackdriver.com/RPM-GPG-KEY-stackdriver'
+default['stackdriver']['yum_gpgkey_url'] = 'https://app.stackdriver.com/RPM-GPG-KEY-stackdriver'

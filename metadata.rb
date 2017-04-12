@@ -9,3 +9,7 @@ version          '0.2.0'
 %w{amazon centos debian fedora redhat scientific ubuntu}.each do |os|
   supports os
 end
+
+%w{apt yum}.each do |cb|
+  depends cb
+end
