@@ -42,6 +42,11 @@ default['stackdriver']['plugins']['tomcat']['jmx']['host'] = 'localhost'
 default['stackdriver']['plugins']['tomcat']['jmxtrans_jar_url'] = 'https://s3.amazonaws.com/stackrpms/jmxtrans/jmxtrans-all.jar'
 
 default['stackdriver']['apt_repo_url'] = 'http://repo.stackdriver.com/apt'
-default['stackdriver']['yum_repo_url'] = 'http://repo.stackdriver.com/repo/el6/$basearch/'
+default['stackdriver']['yum_repo_url'] =
+  if node['platform'] == 'amazon'
+    'http://repo.stackdriver.com/repo/amzn-2014.03/$basearch/'
+  else
+    'http://repo.stackdriver.com/repo/el6/$basearch/'
+  end
 default['stackdriver']['apt_gpgkey_url'] = 'https://app.stackdriver.com/RPM-GPG-KEY-stackdriver'
 default['stackdriver']['yum_gpgkey_url'] = 'https://app.stackdriver.com/RPM-GPG-KEY-stackdriver'
